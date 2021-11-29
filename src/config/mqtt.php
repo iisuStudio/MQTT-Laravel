@@ -19,7 +19,9 @@ return [
     'qos'       => env('MQTT_QOS', 0), // set quality of service here
     'retain'    => env('MQTT_RETAIN', 0), // it should be 0 or 1 Whether the message should be retained.- Retain Flag
     'ssloptions' => [
-        "verify_peer_name" => false,
-        "cafile" => null
+        'verify_peer' => false,
+        'verify_peer_name' => false,
+        'allow_self_signed' => false,
+        'cafile' => null
     ]
 ];

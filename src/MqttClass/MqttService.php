@@ -74,7 +74,10 @@ class MqttService
                 $sslOptions["ssl"]["local_cert"] = $this->localcert;
                 $sslOptions["ssl"]["local_pk"] = $this->localpk;
             }
-            $sslOptions["ssl"] = array_filter(array_merge($sslOptions["ssl"], $this->ssloptions));
+            $sslOptions["ssl"] = array_merge($sslOptions["ssl"], $this->ssloptions);
+            $sslOptions["ssl"] = array_filter($sslOptions["ssl"], function($value){
+                return $value !== NULL;
+            });
             $socketContext = stream_context_create($sslOptions);
             $this->socket = stream_socket_client("tls://" . $this->address . ":" . $this->port, $errno, $errstr, $this->timeout, STREAM_CLIENT_CONNECT, $socketContext);
         } else {
