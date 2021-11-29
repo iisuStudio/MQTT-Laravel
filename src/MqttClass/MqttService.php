@@ -32,9 +32,11 @@ class MqttService
     public $cafile;
     public $localcert;
     public $localpk;
+    public $ssloptions;
 
     function __construct($address, $port, $timeout, $clientId, $cafile = NULL, $localCert = NULL, $localPk = NULL, $debug=false){
         $this->debug = $debug;
+        $this->ssloptions = config('mqtt.ssloptions', []);
         $this->broker($address, $port, $timeout, $clientId, $cafile, $localCert, $localPk);
     }
 
@@ -72,6 +74,7 @@ class MqttService
                 $sslOptions["ssl"]["local_cert"] = $this->localcert;
                 $sslOptions["ssl"]["local_pk"] = $this->localpk;
             }
+            $sslOptions["ssl"] = array_filter(array_merge($sslOptions["ssl"], $this->ssloptions));
             $socketContext = stream_context_create($sslOptions);
             $this->socket = stream_socket_client("tls://" . $this->address . ":" . $this->port, $errno, $errstr, $this->timeout, STREAM_CLIENT_CONNECT, $socketContext);
         } else {
