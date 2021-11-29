@@ -12,7 +12,7 @@ composer require salmanzafar/laravel-mqtt
 ```
 ## Features
 
-* Name and passwd authentication
+* Name and pawd authentication
 * Client certificate authentication
 * Certificate Protection for end to end encryption
 * Enable Debug mode to make it easier for debugging 
@@ -50,7 +50,7 @@ php artisan vendor:publish --provider="Salman\Mqtt\MqttServiceProvider"
 ## Config/mqtt.php
 ```
     'host'      => env('mqtt_host','127.0.0.1'),
-    'passwd'  => env('mqtt_passwd',''),
+    'pawd'      => env('mqtt_pawd',''),
     'username'  => env('mqtt_username',''),
     'certfile'  => env('mqtt_cert_file',''),
     'localcert' => env('mqtt_local_cert', ''),

@@ -38,7 +38,7 @@ class Mqtt
     protected $cert_file = null;
     protected $local_cert = null;
     protected $local_pk = null;
-    protected $passwd = null;
+    protected $pawd = null;
     protected $port = null;
     protected $timeout = 0;
     protected $debug = null;
@@ -49,7 +49,7 @@ class Mqtt
     {
         $this->host         = config('mqtt.host');
         $this->username     = config('mqtt.username');
-        $this->passwd       = config('mqtt.passwd');
+        $this->pawd         = config('mqtt.pawd');
         $this->cert_file    = config('mqtt.certfile');
         $this->local_cert   = config('mqtt.localcert');
         $this->local_pk     = config('mqtt.localpk');
@@ -76,7 +76,7 @@ class Mqtt
 
         $retain = empty($retain) ?  $this->retain : $retain;
 
-        if ($client->connect(true, null, $this->username, $this->passwd))
+        if ($client->connect(true, null, $this->username, $this->pawd))
         {
             $client->publish($topic,$msg, $this->qos, $retain);
             $client->close();
@@ -100,7 +100,7 @@ class Mqtt
 
         $client = new MqttService($this->host, $this->port, $this->timeout, $id, $this->cert_file, $this->local_cert, $this->local_pk, $this->debug);
 
-        if ($client->connect(true, null, $this->username, $this->passwd))
+        if ($client->connect(true, null, $this->username, $this->pawd))
         {
             $topicData = ['qos' => $this->qos];
             $topics = is_array($topic) ? $topic : [$topic];

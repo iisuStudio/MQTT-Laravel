@@ -28,7 +28,7 @@ class MqttService
     public $clientid;			/* client id sent to broker */
     public $will;				/* stores the will of the client */
     private $username;			/* stores username */
-    private $passwd;			/* stores passwd */
+    private $pawd;			    /* stores pawd */
     public $cafile;
     public $localcert;
     public $localpk;
@@ -49,8 +49,8 @@ class MqttService
         $this->localpk = $localpk;
     }
 
-    function connect_auto($clean = true, $will = NULL, $username = NULL, $passwd = NULL){
-        while($this->connect($clean, $will, $username, $passwd)==false){
+    function connect_auto($clean = true, $will = NULL, $username = NULL, $pawd = NULL){
+        while($this->connect($clean, $will, $username, $pawd)==false){
             sleep(10);
         }
         return true;
@@ -58,11 +58,10 @@ class MqttService
 
     /* connects to the broker
         inputs: $clean: should the client send a clean session flag */
-    function connect($clean = true, $will = NULL, $username = NULL, $passwd = NULL){
+    function connect($clean = true, $will = NULL, $username = NULL, $pawd = NULL){
 
         if($will) $this->will = $will;
-        if($username) $this->username = $username;
-        if($passwd) $this->passwd = $passwd;
+
         if ($this->cafile) {
             $sslOptions = ["ssl" => [
                 "verify_peer_name" => true,
@@ -104,8 +103,8 @@ class MqttService
             $var += ($this->will['qos'] << 3); //Set will qos
             if($this->will['retain'])	$var += 32; //Set will retain
         }
-        if($this->username != NULL) $var += 128;	//Add username to header
-        if($this->passwd != NULL) $var += 64;	//Add passwd to header
+        if($username != NULL) $var += 128;	//Add username to header
+        if($pawd != NULL) $var += 64;	//Add pawd to header
         $buffer .= chr($var); $i++;
         //Keep alive
         $buffer .= chr($this->keepalive >> 8); $i++;
@@ -116,8 +115,8 @@ class MqttService
             $buffer .= $this->strwritestring($this->will['topic'],$i);
             $buffer .= $this->strwritestring($this->will['content'],$i);
         }
-        if($this->username) $buffer .= $this->strwritestring($this->username,$i);
-        if($this->passwd) $buffer .= $this->strwritestring($this->passwd,$i);
+        if($username != NULL) $buffer .= $this->strwritestring($username,$i);
+        if($pawd != NULL) $buffer .= $this->strwritestring($pawd,$i);
         $head = "  ";
         $head[0] = chr(0x10);
         $head[1] = chr($i);
